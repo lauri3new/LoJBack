@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const LoJ = require('../mymodules/loj.js');
+const randomise = require('../mymodules/loj.js').randomise;
+const partition = require('../mymodules/loj.js').partition;
 
 mongoose.Promise = Promise;
 
@@ -12,18 +13,10 @@ const Product = require('../models/product');
 const productViewModel = require('../viewmodels/product');
 
 router.get('/', (req, res, next) => {
-  let x = [3,5,2,6];
-  console.log(LoJ(x));
   Product.count().exec((err, count) => {
-    let randomRecord = Math.round(Math.random()*count);
-    let randomRecord2 = Math.round(Math.random()*count);
-    let randomRecord3 = Math.round(Math.random()*count);
-    let randomRecord4 = Math.round(Math.random()*count);
-    do {
-    randomRecord = Math.round(Math.random()*count);
-    } while (randomRecord == randomRecord2)
-    Product.find({ ID : { $in: [randomRecord, randomRecord2, randomRecord3, randomRecord4] } }).exec()
-    .then(products => res.json(products.map( product => productViewModel(product))))
+    let randoms = randomise(4,count);
+    Product.find({ ID : { $in: randoms } }).exec()
+    .then(products => res.json(partition(products.map( product => productViewModel(product)))))
     .catch(err => res.json({error: "something went wrong"}));
 })});
 

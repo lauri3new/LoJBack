@@ -1,11 +1,11 @@
-
-let LoJ = function(arr) {
-  var out = [];
-  for (i=0; i < arr.length/2; i++)
+// transforms 1d array into 2d array with adjacent pairs [a,b,c,d] => [[a,b],[c,d]]
+const partition = (arr) => {
+  let out = [];
+  for (let i=0; i < arr.length/2; i++)
     {
       out.push([])
     };
-  for (j=0; j < out.length; j++)
+  for (let j=0; j < out.length; j++)
     {
       if (j == 0) {
         out[0].push(arr[j],arr[j+1]);
@@ -17,4 +17,15 @@ let LoJ = function(arr) {
   return out
 }
 
-module.exports = LoJ;
+// creates an array of random integers of length 'a' and of max magnititude 'b'
+const randomise = (a,b) => {
+  let out = [];
+  for (let i=0; i < a; i++)
+    {
+      out.push(Math.round(Math.random()*b))
+    }
+  return out
+}
+
+exports.partition = partition;
+exports.randomise = randomise;
