@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const LoJ = require('../mymodules/loj.js');
 
 mongoose.Promise = Promise;
 
@@ -11,6 +12,8 @@ const Product = require('../models/product');
 const productViewModel = require('../viewmodels/product');
 
 router.get('/', (req, res, next) => {
+  let x = [3,5,2,6];
+  console.log(LoJ(x));
   Product.count().exec((err, count) => {
     let randomRecord = Math.round(Math.random()*count);
     let randomRecord2 = Math.round(Math.random()*count);
