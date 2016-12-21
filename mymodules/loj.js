@@ -27,5 +27,15 @@ const randomise = (a,b) => {
   return out
 }
 
+const randomiseArray = (a,b) => {
+  let out = [];
+  for (let i = 0; i < b; i++)
+    {
+      out.push(a[Math.round((Math.random()*(a.length-1)))])
+    }
+  return out
+}
+
 exports.partition = partition;
 exports.randomise = randomise;
+exports.randomiseArray = randomiseArray;
