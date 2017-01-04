@@ -1,15 +1,16 @@
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
 const random = require('./random.js');
 const leagueTable = require('./league.js');
 const quiz = require('./quiz.js');
+const shop = require('./shop.js');
+const search = require('./search.js');
+
+const router = express.Router();
 mongoose.Promise = Promise;
 
 // models
 const Product = require('../models/product');
-
-// viewmodels
 const productViewModel = require('../viewmodels/product');
 
 router.use('/league', leagueTable);
@@ -18,12 +19,10 @@ router.use('/random', random);
 
 router.use('/quiz', quiz);
 
-router.get('/search/:searchterm', (req, res, next) => {
-  let searchTerm = req.params.searchterm.replace(/-/," ");
-  Product.find({$text: {$search: `"${searchTerm}"`}}).sort().limit(500).exec()
-  .then(products => res.json(products))
-  .catch(err => res.json({error: err}));
-});
+router.use('/shop', shop);
+
+// TODO: router search
+// router.use('/search', search);
 
 router.get('/addpoints/:clubID', (req, res, next) => {
   let clubID = req.params.clubID;

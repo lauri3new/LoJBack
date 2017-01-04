@@ -8,7 +8,8 @@ var productSchema = new Schema({
     Image: String,
     Price: Number,
     Merchant: String,
-    Points: 0
+    Points: 0,
+    Team: String
 });
 
 var product = mongoose.model('product', productSchema);
