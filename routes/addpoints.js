@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const router = express.Router();
 mongoose.Promise = Promise;
 
-// models
 const Product = require('../models/product').product;
 
-router.get('/', (req, res) => {
-  Product.aggregate({ $group: { _id: '$Points' } }).sort({ Points: -1 }).limit(10).exec()
-  .then((products) => {
-    res.json(products);
+router.get('/addpoints/:clubID', (req, res) => {
+  const clubID = req.params.clubID;
+  Product.findOneAndUpdate({ ID: clubID }, { $inc: { Points: 3 } }, { new: true }).exec()
+  .then((kits) => {
+    res.json(kits);
   })
   .catch(err => res.json({ error: err }));
 });

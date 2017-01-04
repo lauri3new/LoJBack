@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 mongoose.Promise = Promise;
 
-const Product = require('../models/product');
+const Product = require('../models/product').product;
 
 router.get('/', (req, res) => {
   Product.find().sort({ Points: -1 }).limit(20).exec()
