@@ -9,12 +9,18 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 const mongoose = require('mongoose');
+const Product = require('./models/product').product;
+
 
 // require index js
 const index = require('./routes/index');
 
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/football';
-mongoose.connect(mongoUri);
+mongoose.connect(mongoUri, (err) => {
+  if (err) {
+    console.log('connection error!');
+  }
+});
 
 const app = express();
 

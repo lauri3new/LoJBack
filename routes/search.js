@@ -7,15 +7,18 @@ mongoose.Promise = Promise;
 const Product = require('../models/product').product;
 // const productViewModel = require('../viewmodels/product');
 
-// router.param('page', (req, res, next, page) => {
-//   const validateNum = (page) => {
-//     return page.match(/^\d+$/) !== null ? true : false;
-//   };
-// });
-
-router.get('/:searchterm', (req, res) => {
-  const searchTerm = req.params;
-  Product.find({ $text: { $search: `"${searchTerm}"` } }).sort().limit(9).exec()
+router.get('/:searchterm/:sortby/:order/:page', (req, res, next) => {
+  const searchTerm = req.params.searchterm;
+  const sortBy = req.params.sortby;
+  const page = req.params.page;
+  const order = req.params.order;
+  if (req.params.order === 1) {
+    next(err);
+  }
+  console.log(searchTerm, sortBy, page);
+  Product.find({ $text: { $search: `"${searchTerm}"` } })
+  .limit(90).skip(90 * page).sort({ [sortBy]: `${order}` })
+  .exec()
   .then(products => res.json(products))
   .catch(err => res.json({ error: err }));
 });

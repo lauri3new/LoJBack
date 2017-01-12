@@ -32,6 +32,19 @@ const randomiseArray = (a, b) => {
   return out;
 };
 
+const matchSearch = (title, arr) => {
+  let matched = arr.find((a) => {
+    let term = new RegExp(a, 'i');
+    let result = title.match(term);
+    return result;
+  });
+  if (matched === undefined) {
+    matched = 'other';
+  }
+  return matched;
+};
+
 exports.partition = partition;
 exports.randomise = randomise;
 exports.randomiseArray = randomiseArray;
+exports.matchSearch = matchSearch;
