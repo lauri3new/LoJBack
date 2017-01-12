@@ -1,64 +1,48 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
 const Transform = require('stream').Transform;
 const csv = require('csvtojson');
 const stream = require('stream');
 const productImport = require('./models/product.js').productImport;
-// mongoose connection
-//const mongoUri = 'mongodb://localhost/football';
-//mongoose.connect(mongoUri);
-//mongoose.Promise = Promise;
-// models
 const Product = require('./models/product').product;
 
-
-
-let importProducts = (req, res) => {
-  let counter = 0;
-
-  const modifyObj = new Transform({ objectMode: true });
-
-  modifyObj._transform = function (data, encoding, callback) {
-    // console.log(JSON.parse(JSON.stringify(data)));
-      this.push(productImport(data));
-      callback();
+const importProducts = (req, res) => {
+  const handleError = (error) => {
+    let err = error.toString();
+    res.json({ done: err });
   };
 
-  const saveObj = new Transform({ objectMode: true });
+  // getCSV from file
+  const getCSV = csv({ delimiter: ',' }, { objectMode: true })
+  .fromFile('../products.csv');
 
+  // transform product from csv -- adds extra fields etc..
+  const modifyObj = new Transform({ objectMode: true });
+  modifyObj._transform = function (data, encoding, callback) {
+    this.push(productImport(data));
+    callback();
+  };
+
+  // convert to mongoose object and save
+  const saveObj = new Transform({ objectMode: true });
   saveObj._transform = function (data, encoding, callback) {
-      let product = new Product(data);
-      // TODO: sync code - v bad .. async version giving errors?!
-      product.save( () => {
+    let product = new Product(data);
+    product.save(() => {
       callback();
     });
-      // product.save();
-      // callback();
-  }
-
-  modifyObj.on('finish', (error) =>{
-    console.log('finish')
-  });
-  var out = new stream.Writable({ objectMode: true });
-  out._write = function (modProduct, encoding, done) {
-    done();
   };
-  out.on('finish', () =>{
-       res.json({done: 'done'});
-  })
-  const getCSV = csv({ delimiter: ',' }, { objectMode: true })
-  .fromFile('../products.csv')
-  .on('json', (jsonObj) => {
-    counter++;
-     console.log(counter);
-  })
-  .on('done', (error) => {
-    console.log('done');
-  })
-  .on('error', (error) =>{
-    console.log(error)
+
+  // end stream call respond to server with sucess msg
+  const out = new stream.Writable({ objectMode: true });
+  out.on('finish', () => {
+    res.json({ completo: 'done' });
   });
-   getCSV.pipe(modifyObj).pipe(saveObj).pipe(out);
- };
+
+  getCSV.on('error', e => handleError(e))
+  .pipe(modifyObj)
+  .on('error', e => handleError(e))
+  .pipe(saveObj)
+  .on('error', e => handleError(e))
+  .pipe(out)
+  .on('error', e => handleError(e));
+};
 
 exports.importProducts = importProducts;
