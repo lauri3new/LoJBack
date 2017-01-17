@@ -32,8 +32,8 @@ const productView = (product) => {
   };
 };
 
-const productImport = product => ({
-  ID: product.ID,
+const productImport = (product, Id) => ({
+  ID: Id,
   OurAffLink: product.OurAffLink,
   Title: product.Title,
   Image: product.Image,

@@ -4,6 +4,8 @@ const stream = require('stream');
 const productImport = require('./models/product.js').productImport;
 const Product = require('./models/product').product;
 
+let counter = 1;
+
 const importProducts = (req, res) => {
   const handleError = (error) => {
     let err = error.toString();
@@ -17,7 +19,8 @@ const importProducts = (req, res) => {
   // transform product from csv -- adds extra fields etc..
   const modifyObj = new Transform({ objectMode: true });
   modifyObj._transform = function (data, encoding, callback) {
-    this.push(productImport(data));
+    this.push(productImport(data, counter));
+    counter++;
     callback();
   };
 
@@ -33,6 +36,7 @@ const importProducts = (req, res) => {
   // end stream call respond to server with sucess msg
   const out = new stream.Writable({ objectMode: true });
   out.on('finish', () => {
+    counter = 0;
     res.json({ completo: 'done' });
   });
 

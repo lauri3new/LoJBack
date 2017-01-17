@@ -13,9 +13,14 @@ const productViewModel = require('../models/product').productView;
 
 router.get('/', (req, res) => {
   Product.count().exec((err, count) => {
+    console.log('count', count);
     const randoms = randomise(4, count);
+    console.log('randoms', randoms);
     Product.find({ ID: { $in: randoms } }).exec()
-    .then(products => res.json(partition(products.map(product => productViewModel(product)))))
+    .then(products => {
+      console.log('products', products);
+      res.json(partition(products.map(product => productViewModel(product))));
+    })
     .catch(() => res.json({ error: "something went wrong" }));
   });
 });

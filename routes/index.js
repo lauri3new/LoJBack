@@ -9,17 +9,17 @@ const importProducts = require('../importproducts').importProducts;
 
 const router = express.Router();
 
-router.use('/league', leagueTable);
+router.use('/api/league', leagueTable);
 
-router.use('/random', random);
+router.use('/api/random', random);
 
-router.use('/quiz', quiz);
+router.use('/api/quiz', quiz);
 
-router.use('/shop', shop);
+router.use('/api/shop', shop);
 
-router.use('/addpoints', addPoints);
+router.use('/api/addpoints', addPoints);
 
-router.use('/search', search);
+router.use('/api/search', search);
 
 router.get('/admin/import', importProducts);
 
