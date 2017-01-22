@@ -3,12 +3,17 @@ const matchSearch = require('../mymodules/loj.js').matchSearch;
 
 const Schema = mongoose.Schema;
 
-const teams = ['Arsenal', 'Manchester United', 'Manchester City', 'Barcelona'];
+const teams = ['AFC Bournemouth', 'Arsenal', 'Burnley', 'Chelsea',
+  'Crystal Palace', 'Everton', 'Liverpool', 'Hull City', 'Leicester City',
+  'Liverpool', 'Manchester City', 'Manchester United', 'Middlesbrough',
+  'Southampton', 'Stoke City', 'Sunderland', 'Swansea City', 'Tottenham Hotspur',
+  'Watford', 'West Bromwich Albion', 'West Ham United'];
+
 const productTypes = ['socks', 'shirt', 'scarf', 'tracksuit'];
-const seasons = ['2015', '2014', '2013'];
+const seasons = ['2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010'];
 
 const productSchema = new Schema({
-  ID: String,
+  ID: Number,
   OurAffLink: String,
   Title: String,
   Image: String,
@@ -28,7 +33,8 @@ const productView = (product) => {
     buyLink: product.OurAffLink,
     ImageLink: product.Image,
     Price: product.Price,
-    Title: product.Title
+    Title: product.Title,
+    Points: product.Points
   };
 };
 

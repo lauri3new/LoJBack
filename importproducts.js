@@ -14,7 +14,7 @@ const importProducts = (req, res) => {
 
   // getCSV from file
   const getCSV = csv({ delimiter: ',' }, { objectMode: true })
-  .fromFile('../products.csv');
+  .fromFile('./shirts.csv');
 
   // transform product from csv -- adds extra fields etc..
   const modifyObj = new Transform({ objectMode: true });

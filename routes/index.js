@@ -5,7 +5,7 @@ const leagueTable = require('./league.js');
 // const shop = require('./shop.js');
 // const search = require('./search.js');
 // const addPoints = require('./addpoints.js');
-// const importProducts = require('../importproducts').importProducts;
+const importProducts = require('../importproducts').importProducts;
 
 const router = express.Router();
 // v1 routes
@@ -21,6 +21,6 @@ router.use('/api/random', random);
 //
 // router.use('/api/search', search);
 //
-// router.get('/admin/import', importProducts);
+router.get('/admin/import', importProducts);
 
 module.exports = router;
