@@ -7,7 +7,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const cors = require('cors');
 const mongoose = require('mongoose');
 const Product = require('./models/product').product;
 
@@ -31,12 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// cross origin reference sharing
-const corsOptions = {
-  origin: 'http://localhost:8080'
-};
-app.use(cors(corsOptions));
 
 // use index.js for routing
 app.use('/', index);
