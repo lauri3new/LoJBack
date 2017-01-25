@@ -3,6 +3,8 @@ const path = require('path');
 const favicon = require('serve-favicon');
 // morgan middleware logging requests/responses during development
 const logger = require('morgan');
+// remove cors in production
+const cors = require('cors');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -23,6 +25,12 @@ mongoose.connect(mongoUri, (err) => {
 
 const app = express();
 
+// cross origin reference sharing - remove in production
+const corsOptions = {
+  origin: 'http://localhost:8080'
+};
+app.use(cors(corsOptions));
+
 // middleware
 app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(logger('dev'));
@@ -34,10 +42,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // use index.js for routing
 app.use('/', index);
 
-app.use('*', (req, res) => {
-  console.log('hello');
-  res.sendFile(path.resolve(__dirname, 'public/index.html'));
-});
+// serve SPA - remove in development
+// app.use('*', (req, res) => {
+//   console.log('hello');
+//   res.sendFile(path.resolve(__dirname, 'public/index.html'));
+// });
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

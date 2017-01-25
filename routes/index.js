@@ -14,6 +14,7 @@ router.use('/api/league', leagueTable);
 
 router.use('/api/random', random);
 
+// remove production
 router.get('/admin/import', importProducts);
 
 // router.use('/api/quiz', quiz);
