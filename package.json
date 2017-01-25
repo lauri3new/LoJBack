@@ -15,9 +15,7 @@
     "express": "~4.14.0",
     "mongoose": "^4.7.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
-  },
-  "devDependencies": {
+    "serve-favicon": "~2.3.0",
     "cors": "^2.8.1",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
