@@ -17,11 +17,14 @@ const partition = (arr) => {
 
 // creates an array of random integers of length 'a' and of max magnititude 'b'
 const randomise = (a, b) => {
-  let out = [];
-  for (let i = 0; i < a; i++) {
-    out.push(Math.round(Math.random() * b));
+  let arr = [];
+  while (arr.length < a) {
+    let randomNumber = Math.ceil(Math.random() * b)
+    if (arr.indexOf(randomNumber) > -1)
+      continue;
+    arr[arr.length] = randomNumber;
   }
-  return out;
+  return arr;
 };
 
 const randomiseArray = (a, b) => {
