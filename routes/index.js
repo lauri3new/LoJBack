@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const random = require('./random.js');
 const leagueTable = require('./league.js');
 // const quiz = require('./quiz.js');
@@ -9,6 +10,11 @@ const leagueTable = require('./league.js');
 
 const router = express.Router();
 // v1 routes
+router.use('/privacy', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../public/privacy.html'));
+});
+
+
 router.use('/api/league', leagueTable);
 
 router.use('/api/random', random);
