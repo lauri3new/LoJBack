@@ -25,11 +25,22 @@ router.get('/:id', (req, res, next) => {
   if (!req.xhr) {
     next();
   }
-  if (req.id !== 'init') {
+  if (req.id == 'init') {
+    Product.count().exec((err, count) => {
+      const randoms = randomise(6, count);
+      console.log('random ids : ' + randoms);
+      Product.find({ ID: { $in: randoms } }).exec()
+      .then((products) => {
+        res.json(partition(products.map(product => productViewModel(product))));
+      })
+      .catch(() => res.json({ error: "something went wrong" }));
+    });
+  }
+
     Product.findOneAndUpdate({ ID: req.id }, { $inc: { Points: 3 } }, { new: true }).exec()
     .then()
     .catch((err) => { console.log('internal error adding points', err); });
-  }
+
   Product.count().exec((err, count) => {
     const randoms = randomise(4, count);
     console.log('random ids : ' + randoms);
